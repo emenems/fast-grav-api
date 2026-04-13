@@ -1,0 +1,32 @@
+[project]
+name = "fast-grav-api"
+version = "0.1.0"
+description = "Gravity corrections API"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.34",
+    "pydantic>=2.10",
+    "tidegravity>=0.2",
+    "numpy>=2.0",
+    "pandas>=2.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.uv]
+override-dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.0",
+]
+dev-dependencies = [
+    "httpx>=0.28",
+    "pytest>=8",
+    "pytest-asyncio>=0.25",
+]
