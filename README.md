@@ -16,13 +16,26 @@ Correction values are returned in the unit requested via the `unit` query parame
 
 ```bash
 uv sync
-uv run uvicorn app.main:app --reload
+uv run fastapi dev app/main.py
 ```
 
 The API is available at `http://localhost:8000`.  
 Interactive docs (Swagger UI): `http://localhost:8000/docs`
 
 ## Example requests
+
+### Single timestamp
+
+```bash
+curl -X POST "http://localhost:8000/tides/corrections?unit=ugal" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "lat": 48.8,
+    "lon": 17.7,
+    "alt": 113.0,
+    "date_times": ["2025-05-05T07:47:25Z"]
+  }'
+```
 
 ### Arbitrary timestamps (survey data)
 

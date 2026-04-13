@@ -5,8 +5,7 @@ description = "Gravity corrections API"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "fastapi>=0.115",
-    "uvicorn[standard]>=0.34",
+    "fastapi[standard]>=0.115",
     "pydantic>=2.10",
     "tidegravity>=0.2",
     "numpy>=2.0",
@@ -24,6 +23,9 @@ packages = ["app"]
 override-dependencies = [
     "numpy>=2.0",
     "pandas>=2.0",
+    # fastar (fastapi-cloud-cli dep) has no macOS 26 wheels yet — uv bug workaround.
+    # On Linux (production) it installs normally.
+    "fastar>=0.10.1 ; sys_platform != 'darwin'",
 ]
 dev-dependencies = [
     "httpx>=0.28",
