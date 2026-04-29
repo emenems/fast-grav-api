@@ -4,8 +4,7 @@ from functools import partial
 
 from fastapi import APIRouter, HTTPException, Query
 
-from tidegravity import solve_longman_tide_scalar
-
+from app.services.longman import solve_longman_tide
 from app.models import (
     TideBatchRequest,
     TideBatchResponse,
@@ -19,7 +18,7 @@ router = APIRouter(prefix="/tides", tags=["Tidal Corrections"])
 
 
 def _naive_utc(dt: datetime) -> datetime:
-    """Return a timezone-naive UTC datetime (required by tidegravity)."""
+    """Return a timezone-naive UTC datetime."""
     return dt.astimezone(timezone.utc).replace(tzinfo=None)
 
 
@@ -32,8 +31,7 @@ def _compute_series(
     """Compute tidal corrections for a list of naive UTC timestamps. Runs in a thread."""
     results = []
     for t in timestamps:
-        _, _, total = solve_longman_tide_scalar(lat, lon, alt, t)
-        results.append(float(total))
+        results.append(solve_longman_tide(lat, lon, alt, t))
     return results
 
 
