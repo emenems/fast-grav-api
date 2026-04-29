@@ -19,16 +19,19 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
 
+[dependency-groups]
+dev = [
+    "httpx>=0.28",
+    "pytest>=8",
+    "pytest-asyncio>=0.25",
+]
+
 [tool.uv]
 override-dependencies = [
     "numpy>=2.0",
     "pandas>=2.0",
-    # fastar (fastapi-cloud-cli dep) has no macOS 26 wheels yet — uv bug workaround.
-    # On Linux (production) it installs normally.
-    "fastar>=0.10.1 ; sys_platform != 'darwin'",
-]
-dev-dependencies = [
-    "httpx>=0.28",
-    "pytest>=8",
-    "pytest-asyncio>=0.25",
+    # fastar (fastapi-cloud-cli dep) has no x86_64 Linux wheels and no macOS 26 wheels.
+    # It is only used by `fastapi deploy` (local CLI), never at runtime.
+    # Restrict to platforms where wheels actually exist (Linux ARM / macOS pre-26).
+    "fastar>=0.10.1 ; platform_machine == 'aarch64' and sys_platform == 'linux'",
 ]
