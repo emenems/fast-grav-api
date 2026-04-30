@@ -148,6 +148,25 @@ TransformResponse = Annotated[
 ]
 
 
+# ── S-JTSK ↔ ETRS89 async job ───────────────────────────────────────────────
+
+class AsyncTransformSubmitted(BaseModel):
+    job_id: str
+    status: str
+    mode: str
+
+
+class AsyncTransformStatus(BaseModel):
+    job_id: str
+    status: str
+    mode: str
+    lat: float | None = None
+    lon: float | None = None
+    x: float | None = None
+    y: float | None = None
+    message: str | None = None
+
+
 # ── Tide correction ──────────────────────────────────────────────────────────
 
 class TidePoint(BaseModel):
