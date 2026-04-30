@@ -24,6 +24,34 @@ Interactive docs (Swagger UI): `http://localhost:8000/docs`
 
 ## Example requests
 
+### S-JTSK (JTSK03) → ETRS89
+
+Supply JTSK X/Y in metres (`mode: "jtsk"`):
+
+```bash
+curl -X POST "http://localhost:8000/coordinates/transform/sjtsk" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "x": 524551.68,
+    "y": 1214939.24,
+    "mode": "jtsk"
+  }'
+```
+
+### ETRS89 → S-JTSK (JTSK03)
+
+Supply latitude/longitude in decimal degrees (`mode: "etrs"`):
+
+```bash
+curl -X POST "http://localhost:8000/coordinates/transform/sjtsk" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "x": 48.776750281,
+    "y": 17.683095964,
+    "mode": "etrs"
+  }'
+```
+
 ### Single timestamp
 
 ```bash

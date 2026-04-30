@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field
 
@@ -55,6 +55,100 @@ class TideRequest(BaseModel):
         }
     }
 
+
+# ── Coordinate conversion ────────────────────────────────────────────────────
+
+class CoordinateConvertRequest(BaseModel):
+    """One or more coordinate strings to convert to decimal degrees."""
+
+    values: list[str] = Field(
+        min_length=1,
+        max_length=1_000,
+        description="Coordinate strings in DMS or decimal format",
+    )
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "values": [
+                        "48°46'36,30101\"",
+                        "17°24'05\"",
+                        "48,77675",
+                        "-48.77675",
+                    ]
+                }
+            ]
+        }
+    }
+
+
+class CoordinateResult(BaseModel):
+    input: str
+    decimal: float
+
+
+class CoordinateConvertResponse(BaseModel):
+    results: list[CoordinateResult]
+
+
+# ── S-JTSK ↔ ETRS89 transformation ──────────────────────────────────────────
+
+class JtskToEtrsRequest(BaseModel):
+    x: float = Field(description="S-JTSK (JTSK03) northing in metres")
+    y: float = Field(description="S-JTSK (JTSK03) easting in metres")
+    mode: Literal["jtsk"]
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{"x": 524551.68, "y": 1214939.24, "mode": "jtsk"}]
+        }
+    }
+
+
+class EtrsToJtskRequest(BaseModel):
+    lat: float = Field(ge=-90.0, le=90.0, description="ETRS89 geographic latitude in decimal degrees")
+    lon: float = Field(ge=-180.0, le=180.0, description="ETRS89 geographic longitude in decimal degrees")
+    mode: Literal["etrs"]
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{"lat": 48.776750281, "lon": 17.683095964, "mode": "etrs"}]
+        }
+    }
+
+
+TransformRequest = Annotated[
+    JtskToEtrsRequest | EtrsToJtskRequest,
+    Field(discriminator="mode"),
+]
+
+
+class JtskToEtrsResponse(BaseModel):
+    mode: Literal["jtsk"]
+    job_id: str
+    status: str
+    lat: float | None = None
+    lon: float | None = None
+    message: str | None = None
+
+
+class EtrsToJtskResponse(BaseModel):
+    mode: Literal["etrs"]
+    job_id: str
+    status: str
+    x: float | None = None
+    y: float | None = None
+    message: str | None = None
+
+
+TransformResponse = Annotated[
+    JtskToEtrsResponse | EtrsToJtskResponse,
+    Field(discriminator="mode"),
+]
+
+
+# ── Tide correction ──────────────────────────────────────────────────────────
 
 class TidePoint(BaseModel):
     date_time: datetime
