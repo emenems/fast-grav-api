@@ -21,7 +21,7 @@ router = APIRouter(prefix="/coordinates/transform", tags=["Coordinate Transforma
         "Transform a single point between the Slovak/Czech S-JTSK (JTSK03) datum "
         "and ETRS89 using the ZBGIS RTS API (zbgis.skgeodesy.sk).\n\n"
         "The endpoint delegates to an async job on the Slovak geodesy authority API and "
-        "polls until the result is ready. Typical response time is 1–3 seconds.\n\n"
+        "polls until the result is ready (max ~5 s); returns 504 if ZBGIS does not respond in time.\n\n"
         "---\n\n"
         "**S-JTSK (JTSK03) → ETRS89** (`mode: \"jtsk\"`) — northing/easting in metres, "
         "returns ETRS89 geographic latitude/longitude:\n\n"

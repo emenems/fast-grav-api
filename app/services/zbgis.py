@@ -17,8 +17,8 @@ _CRS: dict[str, tuple[str, str]] = {
 }
 
 _PENDING = {"esriJobSubmitted", "esriJobExecuting"}
-_MAX_POLLS = 30
-_POLL_INTERVAL = 1.0
+_MAX_POLLS = 5
+_POLL_INTERVAL = 2.0
 
 
 def _extract_coord(coord: dict[str, Any]) -> float:
