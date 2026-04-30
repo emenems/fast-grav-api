@@ -1,12 +1,12 @@
 # fast-grav-api
 
-REST API for computing geophysical gravity corrections, built with [FastAPI](https://fastapi.tiangolo.com/).
+REST API for computing geophysical gravity corrections & transformations commonly used in geodesy, built with [FastAPI](https://fastapi.tiangolo.com/).
 
 ## Corrections available
 
-| Correction | Endpoints | Source |
+| Correction | Endpoint | Method |
 |---|---|---|
-| Tidal gravity (Longman 1959) | `/tides/corrections`, `/tides/series` | [LongmanTide](https://github.com/bradyzp/LongmanTide) |
+| Tidal gravity | `/tides/corrections` | Longman (1959), orbital constants after Bartels (1957), Love-number factor 1.16 |
 
 Correction values are returned in the unit requested via the `unit` query parameter (`mgal`, `gal`, `ugal`, `nm_s2`). Default is `mgal`.
 
@@ -37,7 +37,7 @@ curl -X POST "http://localhost:8000/tides/corrections?unit=ugal" \
   }'
 ```
 
-### Arbitrary timestamps (survey data)
+### Multiple timestamps (survey data)
 
 ```bash
 curl -X POST "http://localhost:8000/tides/corrections?unit=ugal" \
@@ -54,19 +54,11 @@ curl -X POST "http://localhost:8000/tides/corrections?unit=ugal" \
   }'
 ```
 
-### Regular time series
+Maximum 10 000 timestamps per request.
+
+## Running tests
 
 ```bash
-curl -X POST "http://localhost:8000/tides/series" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "lat": 48.8,
-    "lon": 17.7,
-    "alt": 113.0,
-    "start_date_time": "2024-06-15T00:00:00Z",
-    "end_date_time": "2024-06-15T23:00:00Z",
-    "resolution_seconds": 3600
-  }'
+uv sync --group dev
+uv run pytest
 ```
-
-Both `start_date_time` and `end_date_time` are inclusive. Maximum 10 000 samples per request.

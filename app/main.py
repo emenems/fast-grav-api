@@ -4,7 +4,7 @@ from app.routers import tides
 
 app = FastAPI(
     title="Geodey & Gravity Corrections API",
-    description="REST endpoints for computing geophysical various corrections.",
+    description="REST API for computing geophysical gravity corrections & transformations commonly used in geodesy.",
     version="0.1.0",
     license_info={"name": "MIT"},
 )
