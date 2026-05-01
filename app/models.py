@@ -95,8 +95,8 @@ class CoordinateConvertResponse(BaseModel):
 # ── S-JTSK ↔ ETRS89 transformation ──────────────────────────────────────────
 
 class JtskToEtrsRequest(BaseModel):
-    x: float = Field(description="S-JTSK (JTSK03) northing in metres")
-    y: float = Field(description="S-JTSK (JTSK03) easting in metres")
+    x: float = Field(description="S-JTSK (JTSK03) Y-westing in metres (Czech/Slovak x convention)")
+    y: float = Field(description="S-JTSK (JTSK03) X-southing in metres (Czech/Slovak y convention)")
     mode: Literal["jtsk"]
 
     model_config = {
@@ -124,47 +124,12 @@ TransformRequest = Annotated[
 ]
 
 
-class JtskToEtrsResponse(BaseModel):
-    mode: Literal["jtsk"]
-    job_id: str
-    status: str
-    lat: float | None = None
-    lon: float | None = None
-    message: str | None = None
-
-
-class EtrsToJtskResponse(BaseModel):
-    mode: Literal["etrs"]
-    job_id: str
-    status: str
-    x: float | None = None
-    y: float | None = None
-    message: str | None = None
-
-
-TransformResponse = Annotated[
-    JtskToEtrsResponse | EtrsToJtskResponse,
-    Field(discriminator="mode"),
-]
-
-
-# ── S-JTSK ↔ ETRS89 async job ───────────────────────────────────────────────
-
-class AsyncTransformSubmitted(BaseModel):
-    job_id: str
-    status: str
+class TransformResponse(BaseModel):
     mode: str
-
-
-class AsyncTransformStatus(BaseModel):
-    job_id: str
-    status: str
-    mode: str
-    lat: float | None = None
-    lon: float | None = None
-    x: float | None = None
-    y: float | None = None
-    message: str | None = None
+    x: float
+    y: float
+    lat: float
+    lon: float
 
 
 # ── Tide correction ──────────────────────────────────────────────────────────
