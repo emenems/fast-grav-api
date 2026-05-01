@@ -4,7 +4,7 @@ from functools import partial
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.services.longman import solve_longman_tide
+from app.services.tides_longman import solve_longman_tide
 from app.models import TideRequest, TideResponse, TidePoint
 from app.units import GravityUnit, convert_from_mgal
 

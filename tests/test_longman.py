@@ -6,7 +6,7 @@ from datetime import datetime
 
 import pytest
 
-from app.services.longman import _mjd, _MJD_J1900, solve_longman_tide
+from app.services.tides_longman import _mjd, _MJD_J1900, solve_longman_tide
 
 # ── _mjd ─────────────────────────────────────────────────────────────────────
 
