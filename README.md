@@ -7,6 +7,7 @@ REST API for computing geophysical gravity corrections & transformations commonl
 | Correction | Endpoint | Method |
 |---|---|---|
 | Tidal gravity | `/tides/corrections` | Longman (1959), orbital constants after Bartels (1957), Love-number factor 1.16 |
+| CG-5 network adjustment *(beta)* | `/adjustment/cg5/upload` (multipart) | Least-squares with polynomial drift; SRGM 1.2.1 (Hefty et al., FCE STU Bratislava) |
 
 Correction values are returned in the unit requested via the `unit` query parameter (`mgal`, `gal`, `ugal`, `nm_s2`). Default is `mgal`.
 

@@ -6,6 +6,7 @@ class GravityUnit(StrEnum):
     gal = "gal"
     ugal = "ugal"
     nm_s2 = "nm_s2"
+    m_s2 = "m_s2"
 
 
 # All factors convert FROM milliGal
@@ -14,8 +15,13 @@ _MGAL_TO: dict[GravityUnit, float] = {
     GravityUnit.gal: 1e-3,
     GravityUnit.ugal: 1e3,
     GravityUnit.nm_s2: 1e4,   # 1 mGal = 10⁻⁵ m/s² = 10 000 nm/s²
+    GravityUnit.m_s2: 1e-5,   # 1 mGal = 10⁻⁵ m/s²
 }
 
 
 def convert_from_mgal(value_mgal: float, unit: GravityUnit) -> float:
     return value_mgal * _MGAL_TO[unit]
+
+
+def convert_to_mgal(value: float, unit: GravityUnit) -> float:
+    return value / _MGAL_TO[unit]

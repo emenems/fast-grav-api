@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routers import conversion, tides, tranformation
+from app.routers import adjustment, conversion, tides, tranformation
 
 app = FastAPI(
     title="Geodey & Gravity Corrections API",
@@ -12,6 +12,7 @@ app = FastAPI(
 app.include_router(tides.router)
 app.include_router(conversion.router)
 app.include_router(tranformation.router)
+app.include_router(adjustment.router)
 
 
 @app.get("/health", tags=["Meta"])
